@@ -118,4 +118,34 @@ export class EmployeeService {
         responseData.aggregations.gender_distribution.buckets,
     };
   }
+
+  async findSalaryRange() {
+    this.dotenv.config();
+
+    const responseData = await getFromElastic(
+      process.env.ELASTICSEARCHURL + '_search',
+      JSON.stringify({
+        size: 0,
+        aggs: {
+          max_salary: {
+            max: {
+              field: 'Salary',
+            },
+          },
+          min_salary: {
+            min: {
+              field: 'Salary',
+            },
+          },
+        },
+      }),
+    );
+
+    return {
+      salary_range: {
+        min: responseData.aggregations.min_salary.value,
+        max: responseData.aggregations.max_salary.value,
+      },
+    };
+  }
 }

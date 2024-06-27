@@ -49,4 +49,9 @@ export class EmployeeController {
   getGenderDistribution() {
     return this.employeeService.findGenderDistribution();
   }
+
+  @Get('salary-range')
+  getSalaryRange() {
+    return this.employeeService.findSalaryRange();
+  }
 }
