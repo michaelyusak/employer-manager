@@ -59,4 +59,9 @@ export class EmployeeController {
   getDesignationDistribution() {
     return this.employeeService.findDesignationDistribution();
   }
+
+  @Get('top-interests')
+  getTopInterests() {
+    return this.employeeService.findTopInterests();
+  }
 }

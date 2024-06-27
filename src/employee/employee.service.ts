@@ -170,4 +170,29 @@ export class EmployeeService {
         responseData.aggregations.designation_distribution.buckets,
     };
   }
+
+  async findTopInterests() {
+    this.dotenv.config();
+
+    const responseData = await getFromElastic(
+      process.env.ELASTICSEARCHURL + '_search',
+      JSON.stringify({
+        aggs: {
+          interests_distribution: {
+            terms: {
+              field: 'ProcessedInterests',
+              order: {
+                _count: 'desc',
+              },
+              size: 3,
+            },
+          },
+        },
+      }),
+    );
+
+    return {
+      top_interests: responseData.aggregations.interests_distribution.buckets,
+    };
+  }
 }
