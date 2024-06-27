@@ -1,4 +1,10 @@
-import { Controller, Get } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Query,
+} from '@nestjs/common';
 import { EmployeeService } from './employee.service';
 
 @Controller('employee')
@@ -23,5 +29,19 @@ export class EmployeeController {
   @Get('marital-status-distribution')
   getMaritalStatusDistribution() {
     return this.employeeService.findMaritalStatusDistribution();
+  }
+
+  @Get('date-of-joining-histogram/')
+  getDateOfJoiningHistogram(@Query('interval') interval: string) {
+    if (interval == '' || !interval) {
+      interval = 'month';
+    } else if (interval != 'month' && interval != 'year') {
+      throw new HttpException(
+        'interval can only be either "year" or "month"',
+        HttpStatus.BAD_REQUEST,
+      );
+    }
+
+    return this.employeeService.findDateOfJoiningHistogram(interval);
   }
 }
