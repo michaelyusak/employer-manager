@@ -16,8 +16,10 @@ export class EmployeeService {
     return { count: responseData.count };
   }
 
-  async findAverageSalary(limit: number) {
+  async findAverageSalary() {
     this.dotenv.config();
+
+    let limit = (await this.count()).count;
 
     if (limit == 0) {
       return 0;
@@ -45,5 +47,41 @@ export class EmployeeService {
     }
 
     return { average_salary: totalSalary / totalEmployee };
+  }
+
+  async findAgeDistribution() {
+    this.dotenv.config();
+
+    let limit = (await this.count()).count;
+
+    if (limit == 0) {
+      return {};
+    }
+
+    const ageDistribution: { [age: number]: { count: number } } = {};
+
+    while (limit > 0) {
+      const responseData = await getFromElastic<EmployeeResponse>(
+        process.env.ELASTICSEARCHURL +
+          `_search?size=${limit > 10000 ? 10000 : limit}`,
+        JSON.stringify({
+          query: {
+            match_all: {},
+          },
+        }),
+      );
+
+      responseData.hits.hits.forEach((employee) => {
+        if (ageDistribution[employee._source.Age]) {
+          ageDistribution[employee._source.Age].count += 1;
+        } else {
+          ageDistribution[employee._source.Age] = { count: 1 };
+        }
+      });
+
+      limit -= 10000;
+    }
+
+    return { age_distribution: ageDistribution };
   }
 }

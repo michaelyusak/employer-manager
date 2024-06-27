@@ -12,8 +12,11 @@ export class EmployeeController {
 
   @Get('average-salary')
   async getAverage() {
-    const totalEmployee = await this.employeeService.count();
+    return this.employeeService.findAverageSalary();
+  }
 
-    return this.employeeService.findAverageSalary(totalEmployee.count);
+  @Get('age-distribution')
+  async getAgeDistribution() {
+    return this.employeeService.findAgeDistribution();
   }
 }
