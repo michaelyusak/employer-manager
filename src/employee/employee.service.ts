@@ -148,4 +148,26 @@ export class EmployeeService {
       },
     };
   }
+
+  async findDesignationDistribution() {
+    this.dotenv.config();
+
+    const responseData = await getFromElastic(
+      process.env.ELASTICSEARCHURL + '_search',
+      JSON.stringify({
+        aggs: {
+          designation_distribution: {
+            terms: {
+              field: 'Designation',
+            },
+          },
+        },
+      }),
+    );
+
+    return {
+      designation_distribution:
+        responseData.aggregations.designation_distribution.buckets,
+    };
+  }
 }
