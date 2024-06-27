@@ -124,4 +124,24 @@ export class EmployeeService {
 
     return { marital_status_distribution: maritalStatusDistribution };
   }
+
+  async findDateOfJoiningHistogram(interval: string) {
+    this.dotenv.config();
+
+    return getFromElastic(
+      process.env.ELASTICSEARCHURL + '_search',
+      JSON.stringify({
+        size: 0,
+        aggs: {
+          date_of_joining_histogram: {
+            date_histogram: {
+              field: 'DateOfJoining',
+              interval: interval,
+              format: 'yyyy-MM-dd',
+            },
+          },
+        },
+      }),
+    );
+  }
 }
