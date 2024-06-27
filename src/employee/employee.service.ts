@@ -8,7 +8,7 @@ export class EmployeeService {
     this.dotenv.config();
 
     const responseData = await getFromElastic(
-      process.env.ELASTICSEARCHURL + '_count',
+      process.env.HOST + '/companydatabase/_count',
     );
 
     return { count: responseData.count };
@@ -18,7 +18,7 @@ export class EmployeeService {
     this.dotenv.config();
 
     const responseData = await getFromElastic(
-      process.env.ELASTICSEARCHURL + '_search',
+      process.env.HOST + '/companydatabase/_search',
       JSON.stringify({
         aggs: {
           average_salary: {
@@ -37,7 +37,7 @@ export class EmployeeService {
     this.dotenv.config();
 
     const responseData = await getFromElastic(
-      process.env.ELASTICSEARCHURL + '_search',
+      process.env.HOST + '/companydatabase/_search',
       JSON.stringify({
         size: 0,
         aggs: {
@@ -59,7 +59,7 @@ export class EmployeeService {
     this.dotenv.config();
 
     const responseData = await getFromElastic(
-      process.env.ELASTICSEARCHURL + '_search',
+      process.env.HOST + '/companydatabase/_search',
       JSON.stringify({
         aggs: {
           marital_status_distribution: {
@@ -81,7 +81,7 @@ export class EmployeeService {
     this.dotenv.config();
 
     return getFromElastic(
-      process.env.ELASTICSEARCHURL + '_search',
+      process.env.HOST + '/companydatabase/_search',
       JSON.stringify({
         size: 0,
         aggs: {
@@ -101,7 +101,7 @@ export class EmployeeService {
     this.dotenv.config();
 
     const responseData = await getFromElastic(
-      process.env.ELASTICSEARCHURL + '_search',
+      process.env.HOST + '/companydatabase/_search',
       JSON.stringify({
         aggs: {
           gender_distribution: {
@@ -123,7 +123,7 @@ export class EmployeeService {
     this.dotenv.config();
 
     const responseData = await getFromElastic(
-      process.env.ELASTICSEARCHURL + '_search',
+      process.env.HOST + '/companydatabase/_search',
       JSON.stringify({
         size: 0,
         aggs: {
@@ -153,7 +153,7 @@ export class EmployeeService {
     this.dotenv.config();
 
     const responseData = await getFromElastic(
-      process.env.ELASTICSEARCHURL + '_search',
+      process.env.HOST + '/companydatabase/_search',
       JSON.stringify({
         aggs: {
           designation_distribution: {
@@ -175,7 +175,7 @@ export class EmployeeService {
     this.dotenv.config();
 
     const responseData = await getFromElastic(
-      process.env.ELASTICSEARCHURL + '_search',
+      process.env.HOST + '/companydatabase/_search',
       JSON.stringify({
         aggs: {
           interests_distribution: {
