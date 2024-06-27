@@ -54,4 +54,9 @@ export class EmployeeController {
   getSalaryRange() {
     return this.employeeService.findSalaryRange();
   }
+
+  @Get('designation-distribution')
+  getDesignationDistribution() {
+    return this.employeeService.findDesignationDistribution();
+  }
 }
