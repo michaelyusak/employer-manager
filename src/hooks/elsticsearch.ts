@@ -1,7 +1,4 @@
-export async function getFromElastic<T>(
-  url: string,
-  body?: string,
-): Promise<T> {
+export async function getFromElastic(url: string, body?: string) {
   const options: RequestInit = {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
