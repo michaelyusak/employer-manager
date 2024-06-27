@@ -1,5 +1,14 @@
-export async function getFromElastic(url: string) {
-  const response = await fetch(url);
+export async function getFromElastic<T>(
+  url: string,
+  body?: string,
+): Promise<T> {
+  const options: RequestInit = {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: body,
+  };
+
+  const response = await fetch(url, options);
   const responseData = await response.json();
 
   if (!response.ok) {
