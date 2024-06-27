@@ -44,4 +44,9 @@ export class EmployeeController {
 
     return this.employeeService.findDateOfJoiningHistogram(interval);
   }
+
+  @Get('gender-distribution')
+  getGenderDistribution() {
+    return this.employeeService.findGenderDistribution();
+  }
 }
