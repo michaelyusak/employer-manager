@@ -11,12 +11,17 @@ export class EmployeeController {
   }
 
   @Get('average-salary')
-  async getAverage() {
+  getAverage() {
     return this.employeeService.findAverageSalary();
   }
 
   @Get('age-distribution')
-  async getAgeDistribution() {
+  getAgeDistribution() {
     return this.employeeService.findAgeDistribution();
+  }
+
+  @Get('marital-status-distribution')
+  getMaritalStatusDistribution() {
+    return this.employeeService.findMaritalStatusDistribution();
   }
 }

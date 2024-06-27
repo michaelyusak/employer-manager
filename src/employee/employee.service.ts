@@ -84,4 +84,44 @@ export class EmployeeService {
 
     return { age_distribution: ageDistribution };
   }
+
+  async findMaritalStatusDistribution() {
+    this.dotenv.config();
+
+    let limit = (await this.count()).count;
+
+    if (limit == 0) {
+      return {};
+    }
+
+    const maritalStatusDistribution: {
+      [marital_status: string]: { count: number };
+    } = {};
+
+    while (limit > 0) {
+      const responseData = await getFromElastic<EmployeeResponse>(
+        process.env.ELASTICSEARCHURL +
+          `_search?size=${limit > 10000 ? 10000 : limit}`,
+        JSON.stringify({
+          query: {
+            match_all: {},
+          },
+        }),
+      );
+
+      responseData.hits.hits.forEach((employee) => {
+        if (maritalStatusDistribution[employee._source.MaritalStatus]) {
+          maritalStatusDistribution[employee._source.MaritalStatus].count += 1;
+        } else {
+          maritalStatusDistribution[employee._source.MaritalStatus] = {
+            count: 1,
+          };
+        }
+      });
+
+      limit -= 10000;
+    }
+
+    return { marital_status_distribution: maritalStatusDistribution };
+  }
 }
